@@ -5,11 +5,11 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"strings"
+	"net/url"
 )
 
 const baseUrl = "https://dt-dev.arctron.cn/api"
-const ContentType = "x-www-form-urlencoded"
+const ContentType = "application/x-www-form-urlencoded"
 
 type body struct {
 	email    string
@@ -18,33 +18,28 @@ type body struct {
 
 func main() {
 	api := "/user/login"
-	url := baseUrl + api
-	data := strings.NewReader("email=demo,password=123456")
-	resp, err := http.Post(url, ContentType, data)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer resp.Body.Close()
-
-	body, err := ioutil.ReadAll(resp)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Printf("%s\n", body)
+	// data := "email=demo,password=123456"
+	// data := `{
+	// 	"eamil":"demo",
+	// 	"password":"123456"
+	// }`
+	data := url.Values{"email": {"demo"}, "password": {"123456"}}
+	body := HttpPost(api, data)
+	fmt.Println(body)
 }
 
-func HttpPost(api, data string) string {
+func HttpPost(api string, data url.Values) string {
 
 	url := baseUrl + api
-	params := strings.NewReader(data)
-	resp, err := http.Post(url, ContentType, params)
+	// params := strings.NewReader(data)
+	// resp, err := http.Post(url, ContentType, params)
+	resp, err := http.PostForm(url, data)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp)
+	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatal(err)
 	}
