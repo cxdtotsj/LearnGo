@@ -8,8 +8,9 @@ import (
 	"net/url"
 )
 
-const baseUrl = "https://dt-dev.arctron.cn/api"
-const ContentType = "application/x-www-form-urlencoded"
+const baseURL string = "https://dt-dev.arctron.cn/api"
+
+// const ContentType = "application/x-www-form-urlencoded"
 
 type body struct {
 	email    string
@@ -24,13 +25,13 @@ func main() {
 	// 	"password":"123456"
 	// }`
 	data := url.Values{"email": {"demo"}, "password": {"123456"}}
-	body := HttpPost(api, data)
+	body := hTTPPost(api, data)
 	fmt.Println(body)
 }
 
-func HttpPost(api string, data url.Values) string {
+func hTTPPost(api string, data url.Values) string {
 
-	url := baseUrl + api
+	url := baseURL + api
 	// params := strings.NewReader(data)
 	// resp, err := http.Post(url, ContentType, params)
 	resp, err := http.PostForm(url, data)
