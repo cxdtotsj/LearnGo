@@ -46,7 +46,7 @@ func (p StringSlice) Swap(i, j int) {
 }
 
 func main() {
-	names := []string{"adgebfgc"}
+	names := []string{"d", "c", "e", "a"}
 	sort.Sort(StringSlice(names))
 	fmt.Println(names)
 }
